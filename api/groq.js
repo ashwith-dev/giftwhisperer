@@ -36,8 +36,8 @@ Suggest exactly 15 thoughtful gift ideas.
 
 FORMAT:
 1. Gift Name – short reason
-   Amazon Search: https://www.amazon.in/s?k=<search-term>
-   Flipkart Search: https://www.flipkart.com/search?q=<search-term>
+   Amazon link
+   Flipkart link
 
 RULES:
 - Give with the product links
@@ -47,6 +47,8 @@ RULES:
 - Avoid generic items like 'Gift Card' or 'Cash'
 - Analyse user details for personalized suggestions
 - Analyse in general world and give the best suggestions
+- Give the links of the products
+- The links should be working , redirect to the product page
 `;
 
     const openaiRes = await fetch(
