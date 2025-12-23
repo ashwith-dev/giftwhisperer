@@ -191,7 +191,8 @@ async function emailLogin() {
     await upsertUserDoc(res.user);
     saveUserToLocal(res.user);
 
-    window.location.href = "../index.html";
+    window.location.href = "app.html";
+;
   } catch (err) {
     alert(err.message);
   }
@@ -203,7 +204,7 @@ async function emailLogin() {
 function signOut() {
   auth.signOut().then(() => {
     localStorage.removeItem("giftwhisperer_user");
-    window.location.href = "./login.html";
+    window.location.href = "/index.html";
   });
 }
 
