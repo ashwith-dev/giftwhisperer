@@ -1,9 +1,11 @@
-// api/groq.js
-// Vercel Serverless Function – Groq Proxy
-// Handles GiftWhisperer AI logic securely
-
+/* =========================================================
+   GiftWhisperer – Groq Serverless Backend
+   Pattern adapted from your Express /api/chat logic
+   Runs on Vercel (Node 18)
+========================================================= */
 
 export default async function handler(req, res) {
+  // Only POST allowed
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
@@ -11,6 +13,16 @@ export default async function handler(req, res) {
   const apiKey = process.env.GROQ_API_KEY;
   const model = process.env.GROQ_MODEL || "llama-3.1-8b-instant";
 
+  // Same safety check you used in Express
+  console.log("GROQ_API_KEY present?", !!apiKey);
+
+  if (!apiKey) {
+    return res.status(500).json({
+      error: "GROQ_API_KEY is not set on the server",
+    });
+  }
+
+  // Parse body (same robustness as your Express code)
   let body = req.body;
   if (typeof body === "string") {
     try {
@@ -22,50 +34,48 @@ export default async function handler(req, res) {
 
   const { mode, data } = body || {};
 
-  try {
-    /* =========================================================
-       GIFT RECOMMENDATION MODE
-    ========================================================= */
-    if (mode === "gift") {
-      if (!data) {
-        return res.status(400).json({ error: "Missing gift data" });
-      }
+  /* ===================== MODE: GIFT ===================== */
+  if (mode === "gift") {
+    const { gender, amount, about, occasion, relationship } = data || {};
 
-      const prompt = `
-You are GiftWhisperer, a premium gift recommendation assistant.
+    // This is your equivalent of SYSTEM_PROMPT in Express
+    const SYSTEM_PROMPT = `
+You are GiftWhisperer, an expert gifting assistant for Indian users.
 
-Recipient details:
-- Gender: ${data.gender}
-- Budget: ₹${data.amount}
-- About: ${data.about}
-- Occasion: ${data.occasion}
-- Relationship: ${data.relationship}
-
-Instructions:
-- Suggest 15 unique gift ideas.
-- Gifts should fit within the budget.
-- Prefer items easily available in India.
-- Avoid generic answers like "gift cards".
-- Format clearly as a numbered list.
+Rules:
+- Be practical, thoughtful, and realistic.
+- Suggest items easily available in India.
+- Avoid generic answers.
+- No explanations, no emojis.
+- Output ONLY a numbered list of 15 unique gift ideas.
 `;
 
+    // This replaces your "messages" array logic
+    const USER_PROMPT = `
+Recipient details:
+- Gender: ${gender}
+- Budget: ₹${amount}
+- About the person: ${about}
+- Occasion: ${occasion}
+- Relationship: ${relationship}
+
+Give 15 gift suggestions within the budget.
+`;
+
+    try {
       const groqRes = await fetch(
         "https://api.groq.com/openai/v1/chat/completions",
         {
           method: "POST",
           headers: {
+            Authorization: `Bearer ${apiKey}`,
             "Content-Type": "application/json",
-            Authorization: "Bearer " + apiKey,
           },
           body: JSON.stringify({
             model,
             messages: [
-              {
-                role: "system",
-                content:
-                  "You are an expert gifting assistant. Be practical and thoughtful.",
-              },
-              { role: "user", content: prompt },
+              { role: "system", content: SYSTEM_PROMPT },
+              { role: "user", content: USER_PROMPT },
             ],
             temperature: 0.6,
           }),
@@ -73,33 +83,30 @@ Instructions:
       );
 
       if (!groqRes.ok) {
-        const txt = await groqRes.text().catch(() => "");
-        return res.status(groqRes.status).json({
+        const errText = await groqRes.text();
+        console.error("Groq API error:", errText);
+        return res.status(500).json({
           error: "Groq API error",
-          details: txt,
+          details: errText,
         });
       }
 
-      const groqData = await groqRes.json();
+      const response = await groqRes.json();
       const answer =
-        groqData.choices?.[0]?.message?.content?.trim() || "";
+        response.choices?.[0]?.message?.content ||
+        "Sorry, I couldn't think of gifts right now.";
 
+      // Same response-style idea as your Express app
       return res.status(200).json({
         success: true,
-        mode: "gift",
         answer,
       });
+    } catch (err) {
+      console.error("Groq server error:", err);
+      return res.status(500).json({ error: "Server error" });
     }
-
-    /* =========================================================
-       INVALID MODE
-    ========================================================= */
-    return res.status(400).json({ error: "Invalid mode" });
-  } catch (err) {
-    console.error("Groq backend error:", err);
-    return res.status(500).json({
-      error: "Groq backend error",
-      details: String(err.message || err),
-    });
   }
+
+  /* ===================== INVALID MODE ===================== */
+  return res.status(400).json({ error: "Invalid mode" });
 }
