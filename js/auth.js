@@ -145,7 +145,7 @@ async function signInWithGoogle(button) {
   saveUserToLocal(user);
 
   button.classList.remove("loading");
-  window.location.href = "../index.html";
+  window.location.href = "/app.html";
 }
 
 /* =========================================================
@@ -168,7 +168,7 @@ async function emailSignup() {
     await upsertUserDoc(res.user);
     saveUserToLocal(res.user);
 
-    window.location.href = "../index.html";
+    window.location.href = "/app.html";
   } catch (err) {
     alert(err.message);
   }
@@ -191,7 +191,7 @@ async function emailLogin() {
     await upsertUserDoc(res.user);
     saveUserToLocal(res.user);
 
-    window.location.href = "app.html";
+    window.location.href = "/app.html";
 ;
   } catch (err) {
     alert(err.message);

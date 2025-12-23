@@ -7,7 +7,7 @@
 /* ================= AUTH GUARD ================= */
 const user = localStorage.getItem("giftwhisperer_user");
 if (!user) {
-  window.location.href = "./login/login.html";
+  window.location.href = "/index.html";
 }
 
 /* ================= DOM ================= */
