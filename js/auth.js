@@ -1,16 +1,27 @@
+/* =========================================================
+   FORM TOGGLE (LOGIN <-> REGISTER)
+========================================================= */
 document.addEventListener("DOMContentLoaded", () => {
   const container = document.querySelector(".container");
-  document.querySelector(".SignUpLink")?.addEventListener("click", e => {
+  const signUpLink = document.querySelector(".SignUpLink");
+  const signInLink = document.querySelector(".SignInLink");
+
+  if (!container) return;
+
+  signUpLink?.addEventListener("click", (e) => {
     e.preventDefault();
     container.classList.add("active");
   });
-  document.querySelector(".SignInLink")?.addEventListener("click", e => {
+
+  signInLink?.addEventListener("click", (e) => {
     e.preventDefault();
     container.classList.remove("active");
   });
 });
 
-/* FIREBASE CONFIG – USE REAL VALUES */
+/* =========================================================
+   FIREBASE CONFIG (USE REAL VALUES)
+========================================================= */
 const firebaseConfig = {
   apiKey: "AIzaSyC-AXGlzlduk4x0VLSR6-kf7v1D1P0zdQc",
   authDomain: "presently-dc0f5.firebaseapp.com",
@@ -25,68 +36,127 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
+/* =========================================================
+   GOOGLE PROVIDER
+========================================================= */
 const provider = new firebase.auth.GoogleAuthProvider();
 
+/* =========================================================
+   HELPERS
+========================================================= */
 async function upsertUserDoc(user) {
-  await db.collection("users").doc(user.uid).set({
-    uid: user.uid,
-    email: user.email,
-    displayName: user.displayName || "",
-    photoURL: user.photoURL || "",
-    lastLogin: firebase.firestore.FieldValue.serverTimestamp()
-  }, { merge: true });
+  try {
+    await db.collection("users").doc(user.uid).set(
+      {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName || "",
+        photoURL: user.photoURL || "",
+        lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
+      },
+      { merge: true }
+    );
+  } catch (err) {
+    console.warn("Firestore write failed:", err);
+  }
 }
 
-function saveUser(user) {
-  localStorage.setItem("presently_user", JSON.stringify({
-    uid: user.uid,
-    email: user.email,
-    displayName: user.displayName
-  }));
+function saveUserToLocal(user) {
+  localStorage.setItem(
+    "presently_user",
+    JSON.stringify({
+      uid: user.uid,
+      email: user.email,
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+    })
+  );
 }
 
-/* GOOGLE */
-window.gwGoogleLogin = async () => {
+/* =========================================================
+   GOOGLE SIGN-IN
+========================================================= */
+async function signInWithGoogle(button) {
   try {
     const res = await auth.signInWithPopup(provider);
     await upsertUserDoc(res.user);
-    saveUser(res.user);
+    saveUserToLocal(res.user);
     window.location.href = "/app.html";
-  } catch (e) {
-    alert(e.message);
+  } catch (err) {
+    alert(err.message);
   }
-};
+}
 
-/* EMAIL SIGNUP */
-window.gwSignup = async () => {
+/* =========================================================
+   EMAIL SIGNUP
+========================================================= */
+async function emailSignup() {
   try {
-    const username = su_username.value.trim();
-    const email = su_email.value.trim();
-    const password = su_password.value;
+    const usernameInput = document.getElementById("su-username");
+    const emailInput = document.getElementById("su-email");
+    const passwordInput = document.getElementById("su-password");
+
+    if (!usernameInput || !emailInput || !passwordInput) {
+      alert("Signup inputs not found");
+      return;
+    }
+
+    const username = usernameInput.value.trim();
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+
+    if (!username || !email || !password) {
+      alert("All fields are required");
+      return;
+    }
 
     const res = await auth.createUserWithEmailAndPassword(email, password);
     await res.user.updateProfile({ displayName: username });
+
     await upsertUserDoc(res.user);
-    saveUser(res.user);
+    saveUserToLocal(res.user);
 
     window.location.href = "/app.html";
-  } catch (e) {
-    alert(e.message);
+  } catch (err) {
+    alert(err.message);
   }
-};
+}
 
-/* EMAIL LOGIN */
-window.gwLogin = async () => {
+/* =========================================================
+   EMAIL LOGIN
+========================================================= */
+async function emailLogin() {
   try {
-    const email = li_email.value.trim();
-    const password = li_password.value;
+    const emailInput = document.getElementById("li-email");
+    const passwordInput = document.getElementById("li-password");
+
+    if (!emailInput || !passwordInput) {
+      alert("Login inputs not found");
+      return;
+    }
+
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+
+    if (!email || !password) {
+      alert("Email and password required");
+      return;
+    }
 
     const res = await auth.signInWithEmailAndPassword(email, password);
+
     await upsertUserDoc(res.user);
-    saveUser(res.user);
+    saveUserToLocal(res.user);
 
     window.location.href = "/app.html";
-  } catch (e) {
-    alert(e.message);
+  } catch (err) {
+    alert(err.message);
   }
-};
+}
+
+/* =========================================================
+   EXPOSE TO WINDOW
+========================================================= */
+window.gwGoogleLogin = (btn) => signInWithGoogle(btn);
+window.gwSignup = emailSignup;
+window.gwLogin = emailLogin;
