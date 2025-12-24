@@ -1,27 +1,16 @@
-/* =========================================================
-   FORM TOGGLE (LOGIN <-> REGISTER)
-========================================================= */
 document.addEventListener("DOMContentLoaded", () => {
   const container = document.querySelector(".container");
-  const signUpLink = document.querySelector(".SignUpLink");
-  const signInLink = document.querySelector(".SignInLink");
-
-  if (!container) return;
-
-  signUpLink?.addEventListener("click", (e) => {
+  document.querySelector(".SignUpLink")?.addEventListener("click", e => {
     e.preventDefault();
     container.classList.add("active");
   });
-
-  signInLink?.addEventListener("click", (e) => {
+  document.querySelector(".SignInLink")?.addEventListener("click", e => {
     e.preventDefault();
     container.classList.remove("active");
   });
 });
 
-/* =========================================================
-   FIREBASE CONFIG (COMPAT SDK)
-========================================================= */
+/* FIREBASE CONFIG – USE REAL VALUES */
 const firebaseConfig = {
   apiKey: "AIzaSyC-AXGlzlduk4x0VLSR6-kf7v1D1P0zdQc",
   authDomain: "presently-dc0f5.firebaseapp.com",
@@ -36,103 +25,68 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-/* =========================================================
-   GOOGLE PROVIDER
-========================================================= */
 const provider = new firebase.auth.GoogleAuthProvider();
 
-/* =========================================================
-   HELPERS
-========================================================= */
 async function upsertUserDoc(user) {
-  const ref = db.collection("users").doc(user.uid);
-  const snap = await ref.get();
-
-  if (!snap.exists) {
-    await ref.set({
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName || "",
-      photoURL: user.photoURL || "",
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
-    });
-  } else {
-    await ref.update({
-      lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
-    });
-  }
+  await db.collection("users").doc(user.uid).set({
+    uid: user.uid,
+    email: user.email,
+    displayName: user.displayName || "",
+    photoURL: user.photoURL || "",
+    lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+  }, { merge: true });
 }
 
-function saveUserToLocal(user) {
-  localStorage.setItem(
-    "giftwhisperer_user",
-    JSON.stringify({
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName,
-      photoURL: user.photoURL,
-    })
-  );
+function saveUser(user) {
+  localStorage.setItem("presently_user", JSON.stringify({
+    uid: user.uid,
+    email: user.email,
+    displayName: user.displayName
+  }));
 }
 
-/* =========================================================
-   GOOGLE SIGN-IN
-========================================================= */
-async function signInWithGoogle(button) {
+/* GOOGLE */
+window.gwGoogleLogin = async () => {
   try {
-    const result = await auth.signInWithPopup(provider);
-    const user = result.user;
+    const res = await auth.signInWithPopup(provider);
+    await upsertUserDoc(res.user);
+    saveUser(res.user);
+    window.location.href = "/app.html";
+  } catch (e) {
+    alert(e.message);
+  }
+};
 
-    await upsertUserDoc(user);
-    saveUserToLocal(user);
+/* EMAIL SIGNUP */
+window.gwSignup = async () => {
+  try {
+    const username = su_username.value.trim();
+    const email = su_email.value.trim();
+    const password = su_password.value;
+
+    const res = await auth.createUserWithEmailAndPassword(email, password);
+    await res.user.updateProfile({ displayName: username });
+    await upsertUserDoc(res.user);
+    saveUser(res.user);
 
     window.location.href = "/app.html";
-  } catch (err) {
-    alert(err.message);
+  } catch (e) {
+    alert(e.message);
   }
-}
+};
 
-/* =========================================================
-   EMAIL SIGNUP
-========================================================= */
-async function emailSignup() {
-  const username = document.getElementById("su-username").value.trim();
-  const email = document.getElementById("su-email").value.trim();
-  const password = document.getElementById("su-password").value;
+/* EMAIL LOGIN */
+window.gwLogin = async () => {
+  try {
+    const email = li_email.value.trim();
+    const password = li_password.value;
 
-  if (!username || !email || !password) {
-    alert("All fields are required");
-    return;
+    const res = await auth.signInWithEmailAndPassword(email, password);
+    await upsertUserDoc(res.user);
+    saveUser(res.user);
+
+    window.location.href = "/app.html";
+  } catch (e) {
+    alert(e.message);
   }
-
-  const res = await auth.createUserWithEmailAndPassword(email, password);
-  await res.user.updateProfile({ displayName: username });
-
-  await upsertUserDoc(res.user);
-  saveUserToLocal(res.user);
-
-  window.location.href = "/app.html";
-}
-
-/* =========================================================
-   EMAIL LOGIN
-========================================================= */
-async function emailLogin() {
-  const email = document.getElementById("li-email").value.trim();
-  const password = document.getElementById("li-password").value;
-
-  const res = await auth.signInWithEmailAndPassword(email, password);
-
-  await upsertUserDoc(res.user);
-  saveUserToLocal(res.user);
-
-  window.location.href = "/app.html";
-}
-
-/* =========================================================
-   EXPOSE TO WINDOW
-========================================================= */
-window.gwGoogleLogin = (btn) => signInWithGoogle(btn);
-window.gwSignup = emailSignup;
-window.gwLogin = emailLogin;
+};
