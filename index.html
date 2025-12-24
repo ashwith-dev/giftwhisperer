@@ -14,11 +14,13 @@
 
 <body class="auth-body">
 
-  <div class="auth-card">
+  <!-- 🔑 IMPORTANT: container class REQUIRED -->
+  <div class="container auth-card">
+
     <h1 class="brand">🎁 Presently</h1>
     <p class="subtitle">Thoughtful gifting, made effortless</p>
 
-    <!-- LOGIN -->
+    <!-- ================= LOGIN ================= -->
     <div class="form-box login">
       <input id="li-email" type="email" placeholder="Email" />
       <input id="li-password" type="password" placeholder="Password" />
@@ -29,11 +31,12 @@
       </button>
 
       <p class="switch">
-        New here? <a href="#" class="SignUpLink">Create an account</a>
+        New here?
+        <a href="#" class="SignUpLink">Create an account</a>
       </p>
     </div>
 
-    <!-- SIGN UP -->
+    <!-- ================= SIGN UP ================= -->
     <div class="form-box register">
       <input id="su-username" type="text" placeholder="Username" />
       <input id="su-email" type="email" placeholder="Email" />
@@ -45,9 +48,11 @@
       </button>
 
       <p class="switch">
-        Already a member? <a href="#" class="SignInLink">Sign in</a>
+        Already a member?
+        <a href="#" class="SignInLink">Sign in</a>
       </p>
     </div>
+
   </div>
 
   <script src="js/auth.js"></script>
