@@ -4,9 +4,10 @@
   <meta charset="UTF-8" />
   <title>Presently | Sign In</title>
 
+  <!-- Styles -->
   <link rel="stylesheet" href="css/style.css" />
 
-  <!-- Firebase SDKs -->
+  <!-- Firebase Compat SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -14,17 +15,24 @@
 
 <body class="auth-body">
 
+  <!-- REQUIRED container for toggle logic -->
   <div class="container auth-card">
 
-    <h1 class="brand">🎁 Presently</h1>
-    <p class="subtitle">Thoughtful gifting, made effortless</p>
+    <!-- BRAND -->
+    <div class="auth-brand">
+      <img src="assets/logo-presently.png" alt="Presently" />
+      <p class="subtitle">Thoughtful gifting, made effortless</p>
+    </div>
 
-    <!-- LOGIN -->
+    <!-- ================= LOGIN ================= -->
     <div class="form-box login">
+      <h2>Welcome back</h2>
+
       <input id="li-email" type="email" placeholder="Email" />
       <input id="li-password" type="password" placeholder="Password" />
 
-      <button onclick="gwLogin()">Sign in</button>
+      <button class="primary-btn" onclick="gwLogin()">Sign in</button>
+
       <button class="google-btn" onclick="gwGoogleLogin(this)">
         Continue with Google
       </button>
@@ -35,13 +43,18 @@
       </p>
     </div>
 
-    <!-- SIGN UP -->
+    <!-- ================= SIGN UP ================= -->
     <div class="form-box register">
+      <h2>Create account</h2>
+
       <input id="su-username" type="text" placeholder="Username" />
       <input id="su-email" type="email" placeholder="Email" />
       <input id="su-password" type="password" placeholder="Password" />
 
-      <button onclick="gwSignup()">Create account</button>
+      <button class="primary-btn" onclick="gwSignup()">
+        Create account
+      </button>
+
       <button class="google-btn" onclick="gwGoogleLogin(this)">
         Sign up with Google
       </button>
@@ -54,6 +67,7 @@
 
   </div>
 
+  <!-- Auth Logic -->
   <script src="js/auth.js"></script>
 </body>
 </html>

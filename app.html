@@ -8,20 +8,61 @@
 
 <body class="chat-body">
 
-  <div class="chat-shell">
-    <header class="chat-top">
-      <span class="logo">🎁 Presently</span>
-      <span class="tagline">Thoughtful gifting, made effortless</span>
-    </header>
+  <div class="app-shell">
 
-    <main id="chat" class="chat-stream"></main>
+    <!-- LEFT PANEL -->
+    <aside class="side-panel">
+      <div class="brand-box">
+        <div class="brand-logo">
+          <img src="assets/logo-presently.png" alt="Presently logo" />
+       </div>
 
-    <footer class="chat-composer">
-      <input id="userInput" placeholder="Type your answer…" />
-      <button onclick="handleUserInput()">Send</button>
-    </footer>
+        <p class="brand-desc">
+          Presently is an AI-powered gifting assistant designed to help you choose
+          thoughtful gifts with confidence. By understanding your needs, budget,
+          and relationship, it delivers curated gift ideas—so gifting feels
+          intentional, not stressful.
+        </p>
+      </div>
+
+      <div class="rules-box">
+        <h4>What to keep in mind</h4>
+        <ul>
+          <li>Enter clear and honest details for the best recommendations</li>
+          <li>Suggestions are budget-aware, prices may vary by store</li>
+          <li>Product links are for discovery, not guaranteed availability</li>
+          <li>AI assists your decision — you choose what feels right</li>
+        </ul>
+      </div>
+
+      <button class="logout-btn" onclick="handleLogout()">Logout</button>
+    </aside>
+
+    <!-- CHAT PANEL -->
+    <section class="chat-panel">
+      <header class="chat-header">
+        Thoughtful gifting, made effortless
+      </header>
+
+      <main id="chat" class="chat-stream"></main>
+
+      <footer class="chat-composer">
+        <input id="userInput" placeholder="Type your answer…" />
+        <button onclick="handleUserInput()">Send</button>
+      </footer>
+    </section>
+
   </div>
 
   <script type="module" src="js/app.js"></script>
+
+  <!-- LOGOUT LOGIC -->
+  <script>
+    function handleLogout() {
+      localStorage.removeItem("giftwhisperer_user");
+      window.location.href = "/index.html";
+    }
+  </script>
+
 </body>
 </html>
