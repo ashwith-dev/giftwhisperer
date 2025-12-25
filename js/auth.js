@@ -160,3 +160,9 @@ async function emailLogin() {
 window.gwGoogleLogin = (btn) => signInWithGoogle(btn);
 window.gwSignup = emailSignup;
 window.gwLogin = emailLogin;
+
+firebase.auth().onAuthStateChanged((user) => {
+  if (user && window.location.pathname.includes("index.html")) {
+    window.location.replace("/app.html");
+  }
+});
