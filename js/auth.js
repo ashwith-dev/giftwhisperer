@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* =========================================================
-   FIREBASE CONFIG (USE REAL VALUES)
+   FIREBASE CONFIG
 ========================================================= */
 const firebaseConfig = {
   apiKey: "AIzaSyC-AXGlzlduk4x0VLSR6-kf7v1D1P0zdQc",
@@ -76,7 +76,7 @@ function saveUserToLocal(user) {
 /* =========================================================
    GOOGLE SIGN-IN
 ========================================================= */
-async function signInWithGoogle(button) {
+async function signInWithGoogle() {
   try {
     const res = await auth.signInWithPopup(provider);
     await upsertUserDoc(res.user);
@@ -92,18 +92,9 @@ async function signInWithGoogle(button) {
 ========================================================= */
 async function emailSignup() {
   try {
-    const usernameInput = document.getElementById("su-username");
-    const emailInput = document.getElementById("su-email");
-    const passwordInput = document.getElementById("su-password");
-
-    if (!usernameInput || !emailInput || !passwordInput) {
-      alert("Signup inputs not found");
-      return;
-    }
-
-    const username = usernameInput.value.trim();
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
+    const username = document.getElementById("su-username").value.trim();
+    const email = document.getElementById("su-email").value.trim();
+    const password = document.getElementById("su-password").value;
 
     if (!username || !email || !password) {
       alert("All fields are required");
@@ -127,16 +118,8 @@ async function emailSignup() {
 ========================================================= */
 async function emailLogin() {
   try {
-    const emailInput = document.getElementById("li-email");
-    const passwordInput = document.getElementById("li-password");
-
-    if (!emailInput || !passwordInput) {
-      alert("Login inputs not found");
-      return;
-    }
-
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
+    const email = document.getElementById("li-email").value.trim();
+    const password = document.getElementById("li-password").value;
 
     if (!email || !password) {
       alert("Email and password required");
@@ -144,7 +127,6 @@ async function emailLogin() {
     }
 
     const res = await auth.signInWithEmailAndPassword(email, password);
-
     await upsertUserDoc(res.user);
     saveUserToLocal(res.user);
 
@@ -157,12 +139,6 @@ async function emailLogin() {
 /* =========================================================
    EXPOSE TO WINDOW
 ========================================================= */
-window.gwGoogleLogin = (btn) => signInWithGoogle(btn);
+window.gwGoogleLogin = signInWithGoogle;
 window.gwSignup = emailSignup;
 window.gwLogin = emailLogin;
-
-firebase.auth().onAuthStateChanged((user) => {
-  if (user && window.location.pathname.includes("index.html")) {
-    window.location.replace("/app.html");
-  }
-});

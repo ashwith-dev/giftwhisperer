@@ -4,74 +4,45 @@
   <meta charset="UTF-8" />
   <title>Presently | Sign In</title>
 
-  <!-- Styles -->
   <link rel="stylesheet" href="css/style.css" />
 
-  <!-- Firebase Compat SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
-
 </head>
 
 <body class="auth-body">
-
-  <!-- REQUIRED container for toggle logic -->
   <div class="container auth-card">
 
-    <!-- BRAND -->
     <div class="auth-brand">
       <img src="/assets/logo-presently.png" alt="Presently" />
     </div>
 
-    <!-- ================= LOGIN ================= -->
     <div class="form-box login">
       <h2>Welcome back</h2>
-
       <input id="li-email" type="email" placeholder="Email" />
       <input id="li-password" type="password" placeholder="Password" />
-
       <button class="primary-btn" onclick="gwLogin()">Sign in</button>
-
-      <button class="google-btn" onclick="gwGoogleLogin(this)">
-        Continue with Google
-      </button>
-
+      <button class="google-btn" onclick="gwGoogleLogin()">Continue with Google</button>
       <p class="switch">
-        New here?
-        <a href="#" class="SignUpLink">Create an account</a>
+        New here? <a href="#" class="SignUpLink">Create an account</a>
       </p>
     </div>
 
-    <!-- ================= SIGN UP ================= -->
     <div class="form-box register">
       <h2>Create account</h2>
-
       <input id="su-username" type="text" placeholder="Username" />
       <input id="su-email" type="email" placeholder="Email" />
       <input id="su-password" type="password" placeholder="Password" />
-
-      <button class="primary-btn" onclick="gwSignup()">
-        Create account
-      </button>
-
-      <button class="google-btn" onclick="gwGoogleLogin(this)">
-        Sign up with Google
-      </button>
-
+      <button class="primary-btn" onclick="gwSignup()">Create account</button>
+      <button class="google-btn" onclick="gwGoogleLogin()">Sign up with Google</button>
       <p class="switch">
-        Already a member?
-        <a href="#" class="SignInLink">Sign in</a>
+        Already a member? <a href="#" class="SignInLink">Sign in</a>
       </p>
     </div>
 
   </div>
-  
-  <!-- Auth Logic -->
+
   <script src="/js/auth.js"></script>
 </body>
 </html>
