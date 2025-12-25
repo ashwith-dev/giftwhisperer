@@ -9,6 +9,26 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
 
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script>
+    // SAME firebaseConfig as auth.js
+    firebase.initializeApp({
+      apiKey: "AIzaSyC-AXGlzlduk4x0VLSR6-kf7v1D1P0zdQc",
+      authDomain: "presently-dc0f5.firebaseapp.com",
+      projectId: "presently-dc0f5",
+   });
+
+  const auth = firebase.auth();
+
+  auth.onAuthStateChanged((user) => {
+    if (!user) {
+      // ❌ Not logged in → kick to login
+      window.location.replace("/index.html");
+    }
+  });
+</script>
+
 </head>
 
 <body class="chat-body">

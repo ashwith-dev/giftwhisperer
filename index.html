@@ -70,7 +70,14 @@
     </div>
 
   </div>
-
+  <script>
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      window.location.replace("/app.html");
+    }
+  });
+ </script>
+ 
   <!-- Auth Logic -->
   <script src="js/auth.js"></script>
 </body>
