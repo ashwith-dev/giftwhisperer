@@ -194,3 +194,150 @@ body {
   border-radius: 12px;
   font-weight: 600;
 }
+
+/* =================================================
+   AUTH FORMS – PREMIUM FIX
+================================================= */
+
+.form-box {
+  display: none;
+}
+
+.container:not(.active) .login {
+  display: block;
+}
+
+.container.active .register {
+  display: block;
+}
+
+.form-box h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+/* INPUTS */
+.form-box input {
+  width: 100%;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  border-radius: 14px;
+  border: 1px solid var(--border-soft);
+  background: rgba(0, 0, 0, 0.45);
+  color: var(--text-main);
+  font-size: 14px;
+  outline: none;
+  transition: border 0.25s ease, box-shadow 0.25s ease;
+}
+
+.form-box input::placeholder {
+  color: var(--text-muted);
+}
+
+.form-box input:focus {
+  border-color: #a78bfa;
+  box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.25);
+}
+
+/* PRIMARY BUTTON */
+.form-box button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  background: var(--primary);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 12px;
+  transition: transform 0.2s ease, box-shadow 0.25s ease;
+}
+
+.form-box button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 32px rgba(139, 92, 246, 0.4);
+}
+
+/* GOOGLE BUTTON */
+.google-btn {
+  background: rgba(255,255,255,0.08) !important;
+  border: 1px solid var(--border-soft);
+  color: var(--text-main);
+}
+
+.google-btn:hover {
+  background: rgba(255,255,255,0.12) !important;
+}
+
+/* SWITCH LINKS */
+.switch {
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.switch a {
+  color: #a78bfa;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.switch a:hover {
+  text-decoration: underline;
+}
+
+/* BRAND (LOGO) */
+.auth-brand img {
+  width: 240px;              /* 🔥 BIGGER LOGO */
+  margin-bottom: 12px;
+}
+
+.auth-brand p {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 28px;
+}
+
+.form-box button:hover,
+.chat-composer button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 32px rgba(139, 92, 246, 0.4);
+}
+
+.google-btn:hover {
+  background: rgba(255,255,255,0.12);
+}
+
+.form-box input:focus,
+.chat-composer input:focus {
+  border-color: #a78bfa;
+  box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.25);
+}
+
+.switch a:hover {
+  text-decoration: underline;
+}
+
+.logout-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.auth-brand img:hover {
+  transform: scale(1.03);
+  transition: transform 0.3s ease;
+}
+
+.bot:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+.user:hover {
+  filter: brightness(1.05);
+}
+
+.auth-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 40px 100px rgba(0,0,0,0.7);
+  transition: all 0.4s ease;
+}
