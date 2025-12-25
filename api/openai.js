@@ -37,6 +37,7 @@ Suggest exactly 15 thoughtful gift ideas.
 FORMAT:
 1. Gift Name – short reason  
    [View on Amazon](https://www.amazon.in/s?k=Brand+Model+Product)
+    - Brand + Model Name
 
 RULES:
 - Give with the product links
