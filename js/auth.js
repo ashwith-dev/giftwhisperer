@@ -61,17 +61,7 @@ async function upsertUserDoc(user) {
   }
 }
 
-function saveUserToLocal(user) {
-  localStorage.setItem(
-    "presently_user",
-    JSON.stringify({
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName,
-      photoURL: user.photoURL,
-    })
-  );
-}
+// REMOVED: saveUserToLocal - no longer needed with Firebase auth persistence
 
 /* =========================================================
    GOOGLE SIGN-IN
@@ -80,7 +70,7 @@ async function signInWithGoogle() {
   try {
     const res = await auth.signInWithPopup(provider);
     await upsertUserDoc(res.user);
-    saveUserToLocal(res.user);
+    // Firebase handles auth state automatically
     window.location.href = "/app.html";
   } catch (err) {
     alert(err.message);
@@ -105,8 +95,7 @@ async function emailSignup() {
     await res.user.updateProfile({ displayName: username });
 
     await upsertUserDoc(res.user);
-    saveUserToLocal(res.user);
-
+    // Firebase handles auth state automatically
     window.location.href = "/app.html";
   } catch (err) {
     alert(err.message);
@@ -128,8 +117,7 @@ async function emailLogin() {
 
     const res = await auth.signInWithEmailAndPassword(email, password);
     await upsertUserDoc(res.user);
-    saveUserToLocal(res.user);
-
+    // Firebase handles auth state automatically
     window.location.href = "/app.html";
   } catch (err) {
     alert(err.message);

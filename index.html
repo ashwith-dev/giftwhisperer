@@ -44,5 +44,14 @@
   </div>
 
   <script src="/js/auth.js"></script>
+  
+  <script>
+    // If user is already logged in, redirect to app
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        window.location.replace("/app.html");
+      }
+    });
+  </script>
 </body>
 </html>

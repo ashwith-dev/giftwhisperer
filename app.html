@@ -9,6 +9,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
 
+  <!-- Load Firebase BEFORE any other scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 </head>
 
 <body class="chat-body">
@@ -51,39 +54,54 @@
 
   </div>
 
+  <!-- Initialize Firebase and check auth BEFORE loading app logic -->
+  <script>
+    // Initialize Firebase
+    firebase.initializeApp({
+      apiKey: "AIzaSyC-AXGlzlduk4x0VLSR6-kf7v1D1P0zdQc",
+      authDomain: "presently-dc0f5.firebaseapp.com",
+      projectId: "presently-dc0f5",
+    });
+
+    // Check auth state ONCE on page load
+    let authChecked = false;
+    
+    firebase.auth().onAuthStateChanged((user) => {
+      if (authChecked) return; // Prevent multiple checks
+      authChecked = true;
+
+      if (!user) {
+        // User not logged in - redirect to login
+        window.location.replace("/index.html");
+      } else {
+        // User is logged in - show the page content
+        console.log("User authenticated:", user.email);
+      }
+    });
+  </script>
+
+  <!-- Load app logic AFTER auth check -->
   <script type="module" src="js/app.js"></script>
 
   <script>
     function logout() {
-      localStorage.removeItem("giftwhisperer_user");
-      window.location.href = "/index.html";
+      firebase.auth().signOut().then(() => {
+        window.location.href = "/index.html";
+      }).catch((err) => {
+        console.error("Logout error:", err);
+        alert("Failed to logout");
+      });
     }
 
     const input = document.getElementById("userInput");
 
     input.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
-         e.preventDefault();
-         handleUserInput();
+        e.preventDefault();
+        handleUserInput();
       }
-  });
- </script>
- <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
- <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-
- <script>
-  firebase.initializeApp({
-    apiKey: "AIzaSyC-AXGlzlduk4x0VLSR6-kf7v1D1P0zdQc",
-    authDomain: "presently-dc0f5.firebaseapp.com",
-    projectId: "presently-dc0f5",
-  });
-
-  firebase.auth().onAuthStateChanged((user) => {
-    if (!user) {
-      window.location.replace("/index.html");
-    }
-  });
- </script>
+    });
+  </script>
 
 </body>
 </html>
