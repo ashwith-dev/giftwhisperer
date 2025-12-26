@@ -33,20 +33,20 @@ body {
 /* ---------- CHAT SHELL ---------- */
 .chat-shell {
   width: 100%;
-  max-width: 1200px;
+  max-width: 95vwx;
   height: 90vh;
   background: var(--card-bg);
   backdrop-filter: blur(18px);
   border-radius: 28px;
   display: grid;
-  grid-template-columns: 320px 1fr;
+  grid-template-columns: 260px 1fr;
   border: 1px solid var(--border-soft);
   overflow: hidden;
 }
 
 /* ---------- LEFT PANEL ---------- */
 .sidebar {
-  padding: 28px;
+  padding: 20px;
   border-right: 1px solid var(--border-soft);
   display: flex;
   flex-direction: column;
