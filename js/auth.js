@@ -31,7 +31,6 @@ const firebaseConfig = {
   appId: "1:641158943378:web:1d344c67393dfbe6998c4b",
 };
 
-// Initialize only if not already initialized
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
@@ -71,11 +70,9 @@ async function signInWithGoogle() {
   try {
     const res = await auth.signInWithPopup(provider);
     await upsertUserDoc(res.user);
-    
-    // Use replace instead of href to prevent back button issues
     window.location.replace("./app.html");
   } catch (err) {
-    if (err.code !== 'auth/popup-closed-by-user') {
+    if (err.code !== "auth/popup-closed-by-user") {
       alert(err.message);
     }
   }
@@ -85,31 +82,22 @@ async function signInWithGoogle() {
    EMAIL SIGNUP
 ========================================================= */
 async function emailSignup() {
-  const btn = event.target;
-  
+  const username = document.getElementById("su-username")?.value.trim();
+  const email = document.getElementById("su-email")?.value.trim();
+  const password = document.getElementById("su-password")?.value;
+
+  if (!username || !email || !password) {
+    alert("All fields are required");
+    return;
+  }
+
   try {
-    btn.disabled = true;
-    btn.textContent = "Creating account...";
-    
-    const username = document.getElementById("su-username").value.trim();
-    const email = document.getElementById("su-email").value.trim();
-    const password = document.getElementById("su-password").value;
-
-    if (!username || !email || !password) {
-      alert("All fields are required");
-      return;
-    }
-
     const res = await auth.createUserWithEmailAndPassword(email, password);
     await res.user.updateProfile({ displayName: username });
     await upsertUserDoc(res.user);
-    
-    // Use replace instead of href to prevent back button issues
     window.location.replace("./app.html");
   } catch (err) {
     alert(err.message);
-    btn.disabled = false;
-    btn.textContent = "Create account";
   }
 }
 
@@ -117,29 +105,20 @@ async function emailSignup() {
    EMAIL LOGIN
 ========================================================= */
 async function emailLogin() {
-  const btn = event.target;
-  
+  const email = document.getElementById("li-email")?.value.trim();
+  const password = document.getElementById("li-password")?.value;
+
+  if (!email || !password) {
+    alert("Email and password required");
+    return;
+  }
+
   try {
-    btn.disabled = true;
-    btn.textContent = "Signing in...";
-    
-    const email = document.getElementById("li-email").value.trim();
-    const password = document.getElementById("li-password").value;
-
-    if (!email || !password) {
-      alert("Email and password required");
-      return;
-    }
-
     const res = await auth.signInWithEmailAndPassword(email, password);
     await upsertUserDoc(res.user);
-    
-    // Use replace instead of href to prevent back button issues
     window.location.replace("./app.html");
   } catch (err) {
     alert(err.message);
-    btn.disabled = false;
-    btn.textContent = "Sign in";
   }
 }
 
