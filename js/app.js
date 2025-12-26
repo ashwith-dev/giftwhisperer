@@ -4,12 +4,6 @@
    Talks to /api/groq (Vercel serverless)
 ========================================================= */
 
-/* ================= AUTH GUARD ================= */
-const user = localStorage.getItem("giftwhisperer_user");
-if (!user) {
-  window.location.href = "/index.html";
-}
-
 /* ================= DOM ================= */
 const chatBox = document.getElementById("chat");
 const input = document.getElementById("userInput");
