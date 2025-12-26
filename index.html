@@ -26,27 +26,11 @@
     <div class="form-box login">
       <h2>Welcome Back</h2>
 
-      <input
-        id="li-email"
-        type="email"
-        placeholder="Email"
-        autocomplete="email"
-      />
-
-      <input
-        id="li-password"
-        type="password"
-        placeholder="Password"
-        autocomplete="current-password"
-      />
+      <input id="li-email" type="email" placeholder="Email" autocomplete="email"/>
+      <input id="li-password" type="password" placeholder="Password" autocomplete="current-password"/>
 
       <button type="button" onclick="gwLogin()">Sign in</button>
-
-      <button
-        type="button"
-        class="google-btn"
-        onclick="gwGoogleLogin(this)"
-      >
+      <button type="button" class="google-btn" onclick="gwGoogleLogin(this)">
         Continue with Google
       </button>
 
@@ -60,36 +44,12 @@
     <div class="form-box register">
       <h2>Create Account</h2>
 
-      <input
-        id="su-username"
-        type="text"
-        placeholder="Username"
-        autocomplete="username"
-      />
-
-      <input
-        id="su-email"
-        type="email"
-        placeholder="Email"
-        autocomplete="email"
-      />
-
-      <input
-        id="su-password"
-        type="password"
-        placeholder="Password"
-        autocomplete="new-password"
-      />
+      <input id="su-username" type="text" placeholder="Username" autocomplete="username"/>
+      <input id="su-email" type="email" placeholder="Email" autocomplete="email"/>
+      <input id="su-password" type="password" placeholder="Password" autocomplete="new-password"/>  
 
       <button type="button" onclick="gwSignup()">Create account</button>
-
-      <button
-        type="button"
-        class="google-btn"
-        onclick="gwGoogleLogin(this)"
-      >
-        Sign up with Google
-      </button>
+      <button type="button" class="google-btn" onclick="gwGoogleLogin(this)">Sign up with Google</button>
 
       <p class="switch">
         Already a member?

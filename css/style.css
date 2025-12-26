@@ -54,7 +54,11 @@ body {
 }
 
 .sidebar img {
-  max-width: 160px;
+  width: 100%;            
+  max-width: 280px;        
+  height: auto;
+  display: block;
+  margin: 0 auto 20px auto; 
 }
 
 .sidebar p {
@@ -83,10 +87,22 @@ body {
   color: var(--text-main);
   cursor: pointer;
   transition: all 0.25s ease;
+  width: 100%;
+  text-align: center;
 }
 
 .logout-btn:hover {
   background: rgba(255, 255, 255, 0.06);
+}
+
+.sidebar > p, 
+.sidebar .rules, 
+.sidebar .logout-btn {
+  background: rgba(255, 255, 255, 0.05); 
+  border: 1px solid var(--border-soft); 
+  padding: 16px;                         
+  border-radius: 16px;                  
+  margin-bottom: 12px;
 }
 
 /* ---------- CHAT AREA ---------- */
@@ -198,9 +214,6 @@ body {
   font-weight: 600;
 }
 
-/* =================================================
-   AUTH FORMS – PREMIUM FIX
-================================================= */
 
 .form-box {
   display: none;
@@ -215,9 +228,16 @@ body {
 }
 
 .form-box h2 {
-  font-size: 24px;
-  margin-bottom: 20px;
-  font-weight: 600;
+  font-size: 32px;          
+  margin-bottom: 28px;      
+  font-weight: 700;        
+  text-align: center;       
+  letter-spacing: -0.5px;   
+  background: linear-gradient(to right, #fff, #b58cff); 
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;    
+  width: 100%;             
 }
 
 /* INPUTS */
@@ -290,10 +310,14 @@ body {
   text-decoration: underline;
 }
 
-/* BRAND (LOGO) */
+
 .auth-brand img {
-  width: 240px;              /* 🔥 BIGGER LOGO */
-  margin-bottom: 12px;
+  width: 300px;            
+  height: auto;
+  margin-bottom: 20px;
+  display: block;
+  margin-left: auto;        
+  margin-right: auto;
 }
 
 .auth-brand p {
@@ -358,7 +382,4 @@ body {
   border-radius: 10px;
 }
 
-.sidebar img {
-  width: 200px;
-  margin-bottom: 12px;
-}
+

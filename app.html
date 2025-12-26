@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
 
-  <!-- Load Firebase BEFORE any other scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   
@@ -37,14 +36,12 @@
 
 <body class="chat-body">
 
-  <!-- Loading screen -->
   <div class="loading-screen" id="loadingScreen">
     <p>Loading...</p>
   </div>
 
   <div class="chat-shell" id="chatShell">
-
-    <!-- LEFT PANEL -->
+    <!-- SIDEBAR -->
     <aside class="sidebar">
       <img src="/assets/logo-presently.png" alt="Presently Logo" />
 
@@ -80,7 +77,6 @@
 
   </div>
 
-  <!-- Initialize Firebase and check auth BEFORE loading app logic -->
   <script>
     // Initialize Firebase ONCE
     if (!firebase.apps.length) {
@@ -98,13 +94,13 @@
       const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
         if (!authResolved) {
           authResolved = true;
-          unsubscribe(); // Stop listening after first check
+          unsubscribe(); 
           resolve(user);
         }
       });
     });
 
-    // Wait for auth state, then show appropriate page
+    
     authPromise.then((user) => {
       const loadingScreen = document.getElementById('loadingScreen');
       const chatShell = document.getElementById('chatShell');
